@@ -1,0 +1,11 @@
+.show {
+    display: block !important;
+}
+
+.cart-table {
+    display: none;
+}
+
+.hide {
+    display: none !important;
+}
