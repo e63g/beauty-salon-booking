@@ -56,7 +56,6 @@ async function load_services() {
     <th>ID</th>
     <th>Name</th>
     <th>Description</th>
-    <th>Duration</th>
     <th>Price</th>
     <th></th>
     </tr>
@@ -72,7 +71,6 @@ async function load_services() {
     <td>${service.id}</td>
     <td>${service.name}</td>
     <td>${service.description}</td>
-    <td>${service.duration}</td>
     <td>${service.price}</td>
     ${button}
     </tr>
@@ -103,7 +101,6 @@ function load_cart() {
     <th>ID</th>
     <th>Name</th>
     <th>Description</th>
-    <th>Duration</th>
     <th>Price</th>
     <th></th>
     </tr>
@@ -128,7 +125,6 @@ function load_cart() {
                 <td>${service.id}</td>
                 <td>${service.name}</td>
                 <td>${service.description}</td>
-                <td>${service.duration}</td>
                 <td>${service.price}</td>
                 ${button}
                 </tr>

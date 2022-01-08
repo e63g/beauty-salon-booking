@@ -22,7 +22,6 @@ class Service(models.Model):
             "name": self.name,
             "description": self.description,
             "price": self.price,
-            "duration": self.duration,
         }
 
 
