@@ -9,3 +9,13 @@
 .hide {
     display: none !important;
 }
+
+.list-group {
+    min-width: 10rem !important;
+}
+
+.list-group-item {
+    min-height: 3rem !important;
+}
+
+

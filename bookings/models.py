@@ -26,70 +26,146 @@ class Service(models.Model):
 
 
 class Reservation(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE, blank=True)
     service = models.ForeignKey("Service", on_delete=models.CASCADE)
-    reference = models.CharField(max_length=4)
+    reference = models.CharField(max_length=4, unique=True)
     email = models.EmailField()
 
     def __str__(self):
-        return f"{self.customer.email} for {self.service.name} at {self.datetime}"
+        return f"{self.email} for {self.service.name}"
+
+
+DEFAULT_ID = 0000
 
 
 class Day(models.Model):
     date = models.DateField()
-    one = models.ForeignKey(
+    one = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="one",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
-    two = models.ForeignKey(
+    two = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="two",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
-    three = models.ForeignKey(
+    three = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="three",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
-    four = models.ForeignKey(
+    four = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="four",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
-    five = models.ForeignKey(
+    five = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="five",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
-    six = models.ForeignKey(
+    six = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="six",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
-    seven = models.ForeignKey(
+    seven = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="seven",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
-    eight = models.ForeignKey(
+    eight = models.OneToOneField(
         "Reservation",
         on_delete=models.CASCADE,
         blank=True,
         related_name="eight",
         null=True,
+        default=DEFAULT_ID,
+        to_field="reference",
     )
+
+    def __str__(self):
+        return f"{self.date}"
+
+    class Meta:
+        ordering = ["-date"]  # Sort in desc order
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=["one", "two", "three", "four", "five", "six", "seven", "eight"],
+        #         name="unique-in-module",
+        #     )
+        # ]
+
+    def serialize(self):
+        try:
+            one = self.one.reference
+        except:
+            one = "empty"
+        try:
+            two = self.two.reference
+        except:
+            two = "empty"
+        try:
+            three = self.three.reference
+        except:
+            three = "empty"
+        try:
+            four = self.four.reference
+        except:
+            four = "empty"
+        try:
+            five = self.five.reference
+        except:
+            five = "empty"
+        try:
+            six = self.six.reference
+        except:
+            six = "empty"
+        try:
+            seven = self.seven.reference
+        except:
+            seven = "empty"
+        try:
+            eight = self.eight.reference
+        except:
+            eight = "empty"
+
+        return {
+            "date": self.date,
+            "one": one,
+            "two": two,
+            "three": three,
+            "four": four,
+            "five": five,
+            "six": six,
+            "seven": seven,
+            "eight": eight,
+        }

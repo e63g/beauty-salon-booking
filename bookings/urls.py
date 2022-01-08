@@ -6,4 +6,5 @@ urlpatterns = [
     path("book", views.book, name="book"),
     path("change", views.change, name="change"),
     path("services", views.services, name="services"),
+    path("dates", views.dates, name="dates"),
 ]

@@ -1,3 +1,5 @@
+let when = {}
+
 document.addEventListener('DOMContentLoaded', function () {
     load_cart()
     load_services()
@@ -13,25 +15,64 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     let step1 = document.querySelector('#step1');
+    let step1nav = document.querySelector('#step1nav');
     let step2 = document.querySelector('#step2');
+    let step2nav = document.querySelector('#step2nav');
     let step3 = document.querySelector('#step3');
+    let step3nav = document.querySelector('#step3nav');
+
     step2.classList.add("hide");
     step3.classList.add("hide");
 
 
     let proceedButton = document.querySelector('#proceed');
     proceedButton.onclick = function () {
-        if (!cart.length) {
-            alert('You did not choose any services.')
-        } else {
-            // hide step 1 tab
-            step1.classList.add("hide")
-            // display step 2
-            step2.classList.remove("hide")
-            // change highlight in nav
-        }
-    }
+        //check if step one
+        if (step1nav.classList.contains('active')) {
+            if (!cart.length) {
+                alert('You did not choose any service.');
+            } else if (cart.lenght > 1) {
+                alert('You can choose only one service.');
+            } else {
+                // #TODO correct highlighting
+                // hide step 1 tab
+                step1.classList.add("hide");
+                // display step 2
+                step2.classList.remove("hide");
+                load_dates()
+                // change highlight in nav
+                step2nav.classList.remove('disabled');
+                step2nav.classList.add('active');
+                step1nav.classList.remove('active');
+                //hide cart button
+                cartButton.classList.add('hide');
+            }
+        } else if (step2nav.classList.contains('active')) {
+            let selected = document.querySelector('.list-group-item.active');
+            console.log(selected.dataset.date)
+            let when = {
+                date: selected.dataset.date,
+                slot: selected.dataset.slot
+            }
+            console.log(when)
 
+            // TODO highlight nav3
+
+            // TODO turn of proceed button
+
+            //TODO swap to board 3
+
+            load_summary()
+
+        } else {
+            //TODO last click sending the data to database
+            console.log('hi')
+            //TODO send the data to django
+
+            //TODO display board 4 - success (after success)
+        }
+
+    }
 });
 
 // 1. STEP 1 - choose services
@@ -172,9 +213,112 @@ function remove(e) {
     load_cart(cart);
 
     let badge = document.querySelector('.badge');
-    badge.innerHTML = cart.length
+    badge.innerHTML = cart.length;
 }
 
 // PHASE 2 - choose dates
+
+async function load_dates() {
+    const response = await fetch(`dates`);
+    const dates = await response.json();
+    console.log(dates);
+    generate_days(dates)
+}
+
+function generate_days(dates) {
+    // return dates in form of html
+    let anchor = document.querySelector('#days-anchor');
+    console.log(dates);
+
+    let inner = '';
+    dates.forEach(date => {
+        for (const prop in date) {
+            switch (prop) {
+                case 'date':
+                    inner += `
+                    <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-primary">
+                        ${date.date}
+                    </a>
+                    `
+                    break;
+                case 'one':
+                    if (date.one == 'empty') {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">9:00-10:00</a>`
+                    } else {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    }
+                    break;
+                case 'two':
+                    if (date.two != 'empty') {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    } else {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">10:00-11:00</a>`
+                    }
+                    break;
+                case 'three':
+                    if (date.three != 'empty') {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    } else {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">11:00-12:00</a>`
+                    }
+                    break;
+                case 'four':
+                    if (date.four != 'empty') {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    } else {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">12:00-13:00</a>`
+                    }
+                    break;
+                case 'five':
+                    if (date.five != 'empty') {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    } else {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">13:00-14:00</a>`
+                    }
+                    break;
+                case 'six':
+                    if (date.six != 'empty') {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    } else {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">15:00-16:00</a>`
+                    }
+                    break;
+                case 'seven':
+                    if (date.seven != 'empty') {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    } else {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">16:00-17:00</a>`
+                    }
+                    break;
+                case 'eight':
+                    if (date.eight != 'empty') {
+                        inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
+                    } else {
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">17:00-18:00</a>`
+                    }
+                    break;
+            }
+        }
+
+        inner += `</div>`
+    })
+
+    anchor.innerHTML = inner;
+
+    buttons = document.querySelectorAll('.clickable')
+    buttons.forEach(element =>
+        element.onclick = function (e) {
+            buttons = document.querySelectorAll('.clickable');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+        })
+}
+
+// PHASE 3 - summarize
+
+function load_summary() {
+
+}
 
 
