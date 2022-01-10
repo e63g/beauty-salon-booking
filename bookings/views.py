@@ -45,12 +45,14 @@ def book(request):
             ref = ref_generator()
 
         reservation = Reservation(service=service, reference=ref, email=email)
-        # reservation.save()
+        reservation.save()
 
         day = Day.objects.get(date=date)
         setattr(day, slot, reservation)
-        logger.error(day.one)
-        # day.save()
+        logger.error(day)
+        logger.error(slot)
+        logger.error(reservation)
+        day.save()
 
         return JsonResponse(ref, safe=False)
     else:
@@ -120,4 +122,33 @@ def dates(request):
     return JsonResponse([day.serialize() for day in days], safe=False)
 
 
-# https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits
+def salon(request):
+    return render(request, "bookings/salon.html")
+
+
+def login_view(request):
+    if request.method == "POST":
+        logger.error("LOGIN")
+        # Attempt to sign user in
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        # Check if authentication successful
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("salon"))
+        else:
+            return render(
+                request,
+                "bookings/login.html",
+                {"message": "Invalid username and/or password."},
+            )
+    else:
+        return render(request, "bookings/login.html")
+
+
+def logout_view(request):
+    logger.error("LOGOUT")
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))

@@ -41,7 +41,7 @@ DEFAULT_ID = 0000
 
 class Day(models.Model):
     date = models.DateField()
-    one = models.OneToOneField(
+    one = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
@@ -51,7 +51,7 @@ class Day(models.Model):
         to_field="reference",
         db_constraint=False,
     )
-    two = models.OneToOneField(
+    two = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
@@ -61,7 +61,7 @@ class Day(models.Model):
         to_field="reference",
         db_constraint=False,
     )
-    three = models.OneToOneField(
+    three = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
@@ -71,7 +71,7 @@ class Day(models.Model):
         to_field="reference",
         db_constraint=False,
     )
-    four = models.OneToOneField(
+    four = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
@@ -81,7 +81,7 @@ class Day(models.Model):
         to_field="reference",
         db_constraint=False,
     )
-    five = models.OneToOneField(
+    five = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
@@ -91,7 +91,7 @@ class Day(models.Model):
         to_field="reference",
         db_constraint=False,
     )
-    six = models.OneToOneField(
+    six = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
@@ -101,7 +101,7 @@ class Day(models.Model):
         to_field="reference",
         db_constraint=False,
     )
-    seven = models.OneToOneField(
+    seven = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
@@ -111,7 +111,7 @@ class Day(models.Model):
         to_field="reference",
         db_constraint=False,
     )
-    eight = models.OneToOneField(
+    eight = models.ForeignKey(
         "Reservation",
         on_delete=models.SET_NULL,
         blank=True,
