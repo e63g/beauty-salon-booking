@@ -44,20 +44,10 @@
 <!-- step 2 choose dates -->
 <div id='step2'>
 
-    <!-- <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#" id='current-day'>1</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-        </ul>
-    </nav> -->
-
     <div class='d-flex flex-row overflow-auto' id='days-anchor'>
     </div>
 
 </div>
-
 
 
 <!-- step 3 confirm -->
@@ -65,8 +55,13 @@
     Step 3
 </div>
 
+<div id='success'>
+    Success
+</div>
+
 {% endblock %}
 
 {% block script %}
+<script src="{% static 'bookings/csrf.js' %}"></script>
 <script src="{% static 'bookings/book.js' %}"></script>
 {% endblock %}

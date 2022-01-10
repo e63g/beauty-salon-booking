@@ -9,12 +9,17 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 import datetime
-
-
+import string
+import random
 from .models import *
 
 
 logger = logging.getLogger(__name__)
+
+
+def ref_generator(size=4, chars=string.ascii_uppercase + string.digits):
+    return "".join(random.choice(chars) for _ in range(size))
+
 
 # Create your views here.
 def index(request):
@@ -22,11 +27,68 @@ def index(request):
 
 
 def book(request):
-    return render(request, "bookings/book.html")
+    if request.method == "POST":
+        data = json.loads(request.body)
+        service_id = data.get("service_id", "")
+        date = data.get("date", "")
+        slot = data.get("slot", "")
+        email = data.get("email", "")
+        logger.error(email)
+        logger.error(date)
+
+        service = Service.objects.get(id=service_id)
+        logger.error(service)
+
+        ref = ref_generator()
+        # check if this reference exists
+        while Reservation.objects.filter(reference=ref).exists():
+            ref = ref_generator()
+
+        reservation = Reservation(service=service, reference=ref, email=email)
+        # reservation.save()
+
+        day = Day.objects.get(date=date)
+        setattr(day, slot, reservation)
+        logger.error(day.one)
+        # day.save()
+
+        return JsonResponse(ref, safe=False)
+    else:
+        return render(request, "bookings/book.html")
 
 
-def change(request):
-    return render(request, "bookings/change.html")
+def cancel(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        ref = data.get("reference", "")
+
+        logger.error(ref)
+
+        try:
+            reservation = Reservation.objects.get(reference=ref)
+            response = {
+                "service": reservation.service.name,
+            }
+            response = json.dumps(response)
+
+        except:
+            response = "Not found"
+
+        return JsonResponse(response, safe=False)
+
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        ref = data.get("reference", "")
+
+        # delete reservation
+        reservation = Reservation.objects.get(reference=ref)
+        reservation.delete()
+
+        logger.error("Day slot emptied")
+
+        return HttpResponse("OK")
+    else:
+        return render(request, "bookings/cancel.html")
 
 
 def services(request):
@@ -56,3 +118,6 @@ def dates(request):
     # prepare JSON response
 
     return JsonResponse([day.serialize() for day in days], safe=False)
+
+
+# https://stackoverflow.com/questions/2257441/random-string-generation-with-upper-case-letters-and-digits

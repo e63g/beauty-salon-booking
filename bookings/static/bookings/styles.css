@@ -18,4 +18,9 @@
     min-height: 3rem !important;
 }
 
+a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
 

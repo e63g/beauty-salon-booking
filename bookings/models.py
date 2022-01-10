@@ -26,7 +26,9 @@ class Service(models.Model):
 
 
 class Reservation(models.Model):
-    service = models.ForeignKey("Service", on_delete=models.CASCADE)
+    service = models.ForeignKey(
+        "Service", on_delete=models.CASCADE, db_constraint=False
+    )
     reference = models.CharField(max_length=4, unique=True)
     email = models.EmailField()
 
@@ -41,79 +43,87 @@ class Day(models.Model):
     date = models.DateField()
     one = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="one",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
     two = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="two",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
     three = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="three",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
     four = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="four",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
     five = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="five",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
     six = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="six",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
     seven = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="seven",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
     eight = models.OneToOneField(
         "Reservation",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         related_name="eight",
         null=True,
         default=DEFAULT_ID,
         to_field="reference",
+        db_constraint=False,
     )
 
     def __str__(self):
-        return f"{self.date}"
+        return f"Day {self.date}"
 
     class Meta:
         ordering = ["-date"]  # Sort in desc order

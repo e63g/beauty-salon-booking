@@ -1,4 +1,7 @@
-let when = {}
+let when = {};
+let cart = [];
+let email;
+let reference;
 
 document.addEventListener('DOMContentLoaded', function () {
     load_cart()
@@ -50,34 +53,31 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (step2nav.classList.contains('active')) {
             let selected = document.querySelector('.list-group-item.active');
             console.log(selected.dataset.date)
-            let when = {
+            when = {
                 date: selected.dataset.date,
                 slot: selected.dataset.slot
             }
             console.log(when)
 
             // TODO highlight nav3
+            step3nav.classList.remove('disabled');
+            step3nav.classList.add('active');
+            step2nav.classList.remove('active');
 
             // TODO turn of proceed button
+            proceedButton.classList.add('hide');
 
             //TODO swap to board 3
+            step2.classList.add("hide");
+            step3.classList.remove("hide");
 
             load_summary()
 
-        } else {
-            //TODO last click sending the data to database
-            console.log('hi')
-            //TODO send the data to django
-
-            //TODO display board 4 - success (after success)
         }
-
     }
 });
 
 // 1. STEP 1 - choose services
-
-let cart = []
 
 async function fetch_services() {
     // load services from the server
@@ -281,21 +281,21 @@ function generate_days(dates) {
                     if (date.six != 'empty') {
                         inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
                     } else {
-                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">15:00-16:00</a>`
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">14:00-15:00</a>`
                     }
                     break;
                 case 'seven':
                     if (date.seven != 'empty') {
                         inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
                     } else {
-                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">16:00-17:00</a>`
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">15:00-16:00</a>`
                     }
                     break;
                 case 'eight':
                     if (date.eight != 'empty') {
                         inner += `<a href="javascript:;" class="list-group-item disabled"></a>`
                     } else {
-                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">17:00-18:00</a>`
+                        inner += `<a href="javascript:;" data-date=${date.date} data-slot=${prop} class="list-group-item clickable">16:00-17:00</a>`
                     }
                     break;
             }
@@ -306,7 +306,7 @@ function generate_days(dates) {
 
     anchor.innerHTML = inner;
 
-    buttons = document.querySelectorAll('.clickable')
+    let buttons = document.querySelectorAll('.clickable')
     buttons.forEach(element =>
         element.onclick = function (e) {
             buttons = document.querySelectorAll('.clickable');
@@ -318,7 +318,146 @@ function generate_days(dates) {
 // PHASE 3 - summarize
 
 function load_summary() {
+    let anchor = document.querySelector('#step3');
+    // generate the form
+    // generate the cart
+    let inner = '';
+    inner += `<h4 class='mt-3'>Choosen services:</h4>
+    <ul class="list-group col-sm-10 mx-auto mt-3">`;
+    cart.forEach(service => {
+        inner += `<li class="list-group-item disabled">${service.name}</li>`;
+    })
+    inner += ` </ul>`;
+
+    // generate date
+    inner += `<h4 class='mt-3'>Choosen date:</h4>
+    <ul class="list-group col-sm-10 mx-auto mt-3">
+    <li class="list-group-item disabled">${when.date}</li>`;
+
+    switch (when.slot) {
+        case 'one':
+            inner += `<li class="list-group-item disabled">09:00-10:00</li>`;
+
+            break;
+        case 'two':
+
+            inner += `<li class="list-group-item disabled">10:00-11:00</li>`;
+
+            break;
+        case 'three':
+
+            inner += `<li class="list-group-item disabled">11:00-12:00</li>`;
+
+            break;
+        case 'four':
+
+            inner += `<li class="list-group-item disabled">12:00-13:00</li>`;
+
+            break;
+        case 'five':
+
+            inner += `<li class="list-group-item disabled">13:00-14:00</li>`;
+
+            break;
+        case 'six':
+
+            inner += `<li class="list-group-item disabled">14:00-15:00</li>`;
+
+            break;
+        case 'seven':
+
+            inner += `<li class="list-group-item disabled">15:00-16:00</li>`;
+
+            break;
+        case 'eight':
+
+            inner += `<li class="list-group-item disabled">16:00-17:00</li>`;
+
+            break;
+    }
+    inner += ` </ul>`;
+
+    // generate form to fill details
+    // email
+    inner += `
+        <h4 class='mt-3'>Your Email:</h4>
+        <form>
+    <div class="form-group row mt-3">
+        <div class="col-sm-10 mx-auto">
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10 mx-auto">
+        <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="gridCheck1" required>
+            <label class="form-check-label" for="gridCheck1">
+            Agree to terms and conditions
+            </label>
+        </div>
+        </div>
+    </div>
+    <div class="form-group row my-3 mx-auto col-sm-4">
+        <button type="submit" id='form-submit' class="btn btn-primary">Confirm Booking</button>
+    </div>
+    </form>`
+
+    anchor.innerHTML = inner;
+    // var x = document.getElementById("myCheck").required;
+
+
+
+    let form = document.querySelector('form')
+    form.onsubmit = async function (e) {
+        e.preventDefault();
+        // get data from the form
+        let emailField = document.querySelector('#inputEmail');
+        email = emailField.value;
+        console.log(email);
+        //send the data to django
+        await upload_booking();
+        //display board 4 - success (after success)
+        display_success();
+    }
 
 }
+
+async function upload_booking() {
+    const response = await fetch('book', {
+        headers: { 'X-CSRFToken': csrftoken },
+        method: 'POST',
+        body: JSON.stringify({
+            service_id: cart[0].id,
+            date: when.date,
+            slot: when.slot,
+            email: email,
+        })
+    })
+    reference = await response.json();
+    console.log(reference);
+    return reference;
+}
+
+function display_success() {
+    let anchor = document.querySelector('#success');
+    let inner =
+        `
+    <div class='col-lg-6 mx-auto mt-5'>
+    <h4 class='text-center mb-3'>Your visit is booked!</h4>
+    <p class='lead text-center'>Reference number: <span class="fw-bold">${reference}</span></p>
+    <p class='lead text-center'>Email confirmation is sent to <span class="fw-bold">${email}</span></p>
+    <p class='lead text-center'>We expect to see you on ${when.date}!</p>
+    </div>
+    `
+
+    anchor.innerHTML = inner;
+
+    let step3 = document.querySelector('#step3');
+    step3.classList.add('hide');
+    let nav = document.querySelector('.nav-pills');
+    nav.classList.add('hide');
+
+}
+
 
 
