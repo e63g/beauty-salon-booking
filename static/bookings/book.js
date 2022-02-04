@@ -114,7 +114,7 @@ async function load_services() {
     <td>${service.id}</td>
     <td>${service.name}</td>
     <td>${service.description}</td>
-    <td>${service.price}</td>
+    <td>${service.price} €</td>
     ${button}
     </tr>
     `
