@@ -2,6 +2,8 @@
 
 This is my second bigger project - beauty salon booking application - was finished in Django.
 
+Live: https://beauty-salon-bookingx.herokuapp.com
+
 Sepcification:
 1. Build on Django framework
 2. SQLite database
