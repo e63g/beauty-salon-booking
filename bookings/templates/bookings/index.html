@@ -4,7 +4,6 @@
 {% block body %}
 
 <div class="jumbotron">
-    <a href="{% url 'login_view' %}" class=" btn btn-outline-primary float-end">Salon Login</a>
     <h1 class="display-5">Schedule your visit.</h1>
     <p class="lead">This is scheduling application for your next beauty treatment. Book, browse available dates and
         possibly cancel your visit.</p>
@@ -18,4 +17,30 @@
     </div>
 
 
+    {% endblock %}
+
+    {% block script %}
+    <script type=text/javascript>
+        document.addEventListener('DOMContentLoaded', function () {
+            alert(`
+Welcome to beauty salon booking application!
+
+This is mysecond bigger project done in December 2021 - beauty salon booking application. This was my final project after CS50 Web course from Harvard Univeristy.
+
+Sepcification:
+1. Build on Django framework
+2. SQLite database
+3. HTML+CSS+JavaScript on the frontend
+4. Single page view in the whole booking and cancellation process
+5. Mobile responsive
+
+Lessons learned:
+1. Construction of more comlicated single page views with pure JS is quickly starting to get messy - after this project I have jumped straight into learning frontend JS frameworks
+2. Booking and scheduling systems are very challanging to construct - for the future its better to use external API solutions
+3. Deployment of Django app to production
+
+Source code: https://github.com/e63g/beauty-salon-booking
+            `)
+        })
+    </script>
     {% endblock %}

@@ -22,10 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let step2 = document.querySelector('#step2');
     let step2nav = document.querySelector('#step2nav');
     let step3 = document.querySelector('#step3');
-    let step3nav = document.querySelector('#step3nav');
+    let step3nav = document.querySelector('#step3nav')
+    let success = document.querySelector('#success');
 
     step2.classList.add("hide");
     step3.classList.add("hide");
+    success.classList.add("hide");
 
 
     let proceedButton = document.querySelector('#proceed');

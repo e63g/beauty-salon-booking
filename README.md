@@ -1,11 +1,27 @@
+## Preface
 
-# CS50web Capstone - Beauty Salon Booking App
+This is my second bigger project - beauty salon booking application - was finished in Django.
+
+Sepcification:
+1. Build on Django framework
+2. SQLite database
+3. HTML+CSS+JavaScript on the frontend
+4. Single page view in the whole booking and cancellation process
+5. Mobile responsive
+
+Lessons learned:
+1. Construction of more comlicated single page views with pure JS is quickly starting to get messy - after this project I have jumped straight into learning frontend JS frameworks
+2. Booking and scheduling systems are very challanging to construct - for the future its better to use external API solutions
+3. Deployment of Django app to production
+
+# Icon Beauty Booking System
 
 Beauty Salon Booking App allows the customers choosing the service needed, viewing availible dates, review their booking details and finally book an real appointment.
 
 After the booking, customer have an option to retrive his booking and cancel it.
 
 Beauty Salon can also highly benefit from this software - salon owner can view their calendar, add a new booking for customer manually or cancel a booking as well.
+
 ## Authors
 
 - [@e63g](https://www.github.com/e63g)
